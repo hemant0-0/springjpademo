@@ -29,19 +29,17 @@ public class EmployeeController {
     public Optional<Employee> getEmployee(@PathVariable Integer id){
         return employeeRepo.findById(id);
     }
-//   @PutMapping("/updateemployee")
-//    public String updateEmployee(){
-//    return employeeRepo.
-//    }
 
-    @PutMapping("/updateemployee/{id}")
-    public ResponseEntity<Object> getEmployee(@RequestBody Employee employee, @PathVariable Integer id){
-    Optional<Employee> emp=employeeRepo.findById(id);
-    if(!emp.isPresent())
-        return ResponseEntity.notFound().build();
-        employee.setFirstName(id);
-
-    return null;
+    @PutMapping("/updateemployee}")
+    public String updateEmp(@RequestBody Employee employee){
+    Optional<Employee> emp=employeeRepo.findById(employee.getId());
+    if(emp.isPresent()){
+        emp.get().setLastName(employee.getLastName());
+        emp.get().setCity(employee.getCity());
+        employeeRepo.save(emp.get());
+        return "update";
+    }
+    return "record Not found";
     }
 
     @GetMapping("/deleteEmp/{id}")
